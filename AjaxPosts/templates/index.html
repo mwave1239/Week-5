@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax Posts</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $.get('/posts/index_json', function(data) {
+                var htmlStr = "";
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    htmlStr += "<tr><td>" + data[i].post + "</td>";
+                    htmlStr += "<td>Posted @ " + data[i].created_at + "</td>";
+                    htmlStr += "</tr>"
+                }
+                $('tbody').html(htmlStr);
+            }, 'json');
+
+            $('form').submit(function(){
+                $.post('/create/post', $(this).serialize(), function(data_form){
+                    console.log(data_form);
+                    testStr = "";
+                    testStr += "<tr><td>"+data_form[0].post+"</td>"
+                    testStr += "<td>Posted @ "+data_form[0].created_at+"</td>"
+                    testStr += "</tr>"
+                    $('tbody').append(testStr);
+                });
+
+                return false;
+            });
+
+
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <table style="width:100%" class="table table-bordered text-left">
+                <thead>
+                    <tr>
+                        <th>Post</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <!-- {% for posts in posts %}
+            <div class="col-md-2 text-left">
+                {{posts.post}}, created: {{posts.created_at}}
+            </div>
+            {% endfor %} -->
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-left">
+                Add a Note:
+                <form class="create_post" action="/create/post" method="POST">
+                    <textarea rows="4" cols="50" name="message"></textarea>
+                    <input type="submit" class="btn btn-primary" />
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

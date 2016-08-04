@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+            $(document).ready(function(){
+                $('form').submit(function(){
+                    $.get('http://api.openweathermap.org/data/2.5/weather?q='+$('#city_select').val()+'&units=imperial&appid=61cc62ed4d41048e6c20e83990511e82', function(data){
+                        $('#city_name').append("<h2>"+data.name+"</h2>");
+                        $('#city_temp').append(data.main.temp);
+                    }, 'json');
+                return false;
+                });
+            });
+    </script>
+</head>
+
+<body>
+    <div>
+      <form action="/dontgo" method='POST'>
+        City Forcast: <input type="text" id="city_select">
+        <input type="submit" value="Forcast">
+      </form>
+    </div>
+    <div id="data">
+        <p id="city_name">
+
+        </p>
+        <p id="city_temp">
+
+        </p>
+
+    </div>
+
+</body>
+
+</html>
